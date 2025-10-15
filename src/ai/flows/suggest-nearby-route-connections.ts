@@ -22,7 +22,7 @@ const SuggestNearbyRouteConnectionsOutputSchema = z.object({
   nearbyConnections: z.array(
     z.object({
       route: z.string().describe('The suggested bus route connection.'),
-      details: z.string().describe('Details about the connection, including stops and estimated travel time.'),
+      details: z.string().describe('Details about the connection, including stops and estimated travel time, formatted as a step-by-step list.'),
     })
   ).describe('A list of suggested nearby bus route connections.'),
 });
@@ -47,13 +47,15 @@ const prompt = ai.definePrompt({
   Given the user's origin: {{{origin}}}, destination: {{{destination}}}, and available routes: {{{availableRoutes}}},
   suggest possible bus route connections to reach the destination from the origin.
 
-  When providing details, break them down into clear, numbered steps. For example:
+  IMPORTANT: When providing details for a connection, you MUST break them down into clear, numbered steps. For example:
   "Step 1: Take W-11 to Saddar.
   Step 2: Transfer to D-3.
   Step 3: Disembark at Malir or Drigh Road for the airport.
   Estimated travel time from Saddar is 30-45 minutes."
 
-  If the destination is "Karachi Airport", use the following information:
+  Use this format for ALL connection details.
+
+  If the destination is "Karachi Airport", use the following information to construct the step-by-step guide:
   The D-3 bus route travels through Malir, Drigh Road, and along Shahrah-e-Faisal, all of which are in close proximity to Karachi Airport.
   - If the user is near the W-11 route: Suggest taking W-11 to Saddar, then transferring to D-3.
   - If the user is near the G-7 route: Suggest taking G-7 to Liaquatabad or Nazimabad, then transferring to W-11 (towards Saddar), and then transferring to D-3.
