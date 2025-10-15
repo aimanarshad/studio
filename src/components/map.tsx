@@ -26,7 +26,7 @@ export function Map({ userLocation }: MapProps) {
       >
         {userLocation && (
           <AdvancedMarker position={userLocation}>
-            <Pin backgroundColor={'hsl(var(--primary))'} borderColor={'white'} />
+            <Pin background={'hsl(var(--primary))'} borderColor={'white'} />
           </AdvancedMarker>
         )}
       </GoogleMap>
