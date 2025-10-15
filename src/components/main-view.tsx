@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Map } from '@/components/map';
 import RoutePanel from '@/components/route-panel';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Directions } from './directions';
 
 export type Route = {
   name: string;
@@ -32,7 +33,15 @@ export default function MainView() {
 
   return (
     <div className="h-full w-full animate-in fade-in-0 slide-in-from-top-4 duration-1000">
-      <Map userLocation={userLocation} />
+      <Map userLocation={userLocation}>
+        {route && (
+            <Directions
+                origin={route.start}
+                destination={route.end}
+                travelMode={google.maps.TravelMode.TRANSIT}
+            />
+        )}
+      </Map>
       <RoutePanel
         onRouteFound={handleRouteFound}
         onLocationFound={setUserLocation}

@@ -6,6 +6,7 @@ import { useTheme } from 'next-themes';
 
 interface MapProps {
   userLocation: { lat: number; lng: number } | null;
+  children?: React.ReactNode;
 }
 
 const KARACHI_COORDS = { lat: 24.8607, lng: 67.0011 };
@@ -15,7 +16,7 @@ const MAP_STYLES = {
   dark: "1b1c3c3a5b0c0d1e" // A sleek, dark map style
 };
 
-export function Map({ userLocation }: MapProps) {
+export function Map({ userLocation, children }: MapProps) {
   const { resolvedTheme } = useTheme();
   const center = userLocation || KARACHI_COORDS;
   const mapId = resolvedTheme === 'dark' ? MAP_STYLES.dark : MAP_STYLES.light;
@@ -34,9 +35,10 @@ export function Map({ userLocation }: MapProps) {
       >
         {userLocation && (
           <AdvancedMarker position={userLocation}>
-            <Pin background={'hsl(var(--primary))'} borderColor={'white'} glyphColor={'white'} />
+            <Pin background={'hsl(var(--primary))'} borderColor={'white'} />
           </AdvancedMarker>
         )}
+        {children}
       </GoogleMap>
     </div>
   );
