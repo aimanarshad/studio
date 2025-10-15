@@ -12,8 +12,8 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const SuggestNearbyRouteConnectionsInputSchema = z.object({
-  origin: z.string().describe('The user\u2019s origin location.'),
-  destination: z.string().describe('The user\u2019s destination location.'),
+  origin: z.string().describe('The user’s origin location.'),
+  destination: z.string().describe('The user’s destination location.'),
   availableRoutes: z.array(z.string()).describe('A list of available bus routes.'),
 });
 export type SuggestNearbyRouteConnectionsInput = z.infer<typeof SuggestNearbyRouteConnectionsInputSchema>;
@@ -47,10 +47,22 @@ const prompt = ai.definePrompt({
   Given the user's origin: {{{origin}}}, destination: {{{destination}}}, and available routes: {{{availableRoutes}}},
   suggest possible bus route connections to reach the destination from the origin.
 
-  If no reasonable connections can be made based on the available routes, return an empty array for nearbyConnections.
+  When providing details, break them down into clear, numbered steps. For example:
+  "Step 1: Take W-11 to Saddar.
+  Step 2: Transfer to D-3.
+  Step 3: Disembark at Malir or Drigh Road for the airport.
+  Estimated travel time from Saddar is 30-45 minutes."
 
-  Format your response as a JSON object that conforms to the following schema:
-  ${JSON.stringify(SuggestNearbyRouteConnectionsOutputSchema.shape, null, 2)}`,
+  If the destination is "Karachi Airport", use the following information:
+  The D-3 bus route travels through Malir, Drigh Road, and along Shahrah-e-Faisal, all of which are in close proximity to Karachi Airport.
+  - If the user is near the W-11 route: Suggest taking W-11 to Saddar, then transferring to D-3.
+  - If the user is near the G-7 route: Suggest taking G-7 to Liaquatabad or Nazimabad, then transferring to W-11 (towards Saddar), and then transferring to D-3.
+  - If the user is near the UC-4 route: Suggest taking UC-4 to Nagan Chowrangi, then transferring to W-11 (towards Saddar), and then transferring to D-3.
+  - Once on D-3, instruct the user to disembark at stops like Malir, Drigh Road, or any suitable stop on Shahrah-e-Faisal for a short onward journey to the airport.
+  - The estimated travel time from Saddar to the airport vicinity on D-3 is 30-45 minutes.
+
+  If no reasonable connections can be made based on the available routes, return an empty array for nearbyConnections.
+  `,
 });
 
 const suggestNearbyRouteConnectionsFlow = ai.defineFlow(
