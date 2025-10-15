@@ -7,6 +7,8 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './
 import { ArrowRight, Bus, Clock, MapPin, Route as RouteIcon, Volume2, AlertTriangle, Users, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
+import { Directions } from './directions';
+import { Map } from '@vis.gl/react-google-maps';
 
 interface RouteResultsProps {
   route: Route;
@@ -62,7 +64,7 @@ export default function RouteResults({ route }: RouteResultsProps) {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 w-full">
         <div className="flex items-center justify-between">
             <h2 className="text-2xl font-bold font-headline text-primary">{route.name}</h2>
             <Button variant="ghost" size="icon" onClick={handleTextToSpeech} className="h-9 w-9 text-muted-foreground hover:text-primary">
@@ -71,20 +73,23 @@ export default function RouteResults({ route }: RouteResultsProps) {
             </Button>
         </div>
         
-        <div className="relative rounded-xl border border-white/10 bg-card/70 backdrop-blur-lg text-white shadow-lg overflow-hidden">
+        <div className="relative rounded-xl border border-white/10 bg-card/70 backdrop-blur-lg text-white shadow-2xl overflow-hidden">
             {route.image && (
-                <div className="relative h-48 w-full">
-                    <Image
-                        src={route.image}
-                        alt="Bus image"
-                        fill
-                        className="object-cover"
-                        data-ai-hint="modern bus"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent"></div>
-                    <div className="absolute bottom-4 left-4">
-                      <span className="font-bold text-6xl text-white drop-shadow-lg">{route.number}</span>
-                    </div>
+                <div className="relative h-64 w-full">
+                    <Map
+                      defaultCenter={{ lat: 24.8607, lng: 67.0011 }}
+                      defaultZoom={12}
+                      gestureHandling={'greedy'}
+                      disableDefaultUI={true}
+                      mapId="1b1c3c3a5b0c0d1e"
+                      className="h-full w-full"
+                    >
+                      <Directions
+                        origin={route.start}
+                        destination={route.end}
+                        travelMode={google.maps.TravelMode.TRANSIT}
+                      />
+                    </Map>
                 </div>
             )}
             <div className="p-4 space-y-4 text-sm">
