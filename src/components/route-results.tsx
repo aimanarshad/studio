@@ -39,11 +39,9 @@ export default function RouteResults({ route }: RouteResultsProps) {
       const stepDescription = steps[i+1];
       
       let icon = <ArrowRight className="h-5 w-5 text-secondary flex-shrink-0" />;
-      if (stepDescription) {
-        if (stepDescription.includes('Take')) icon = <Bus className="h-5 w-5 text-primary flex-shrink-0" />;
-        if (stepDescription.includes('Transfer')) icon = <Users className="h-5 w-5 text-secondary flex-shrink-0" />;
-        if (stepDescription.includes('Arrive')) icon = <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />;
-      }
+      if (stepDescription?.includes('Take')) icon = <Bus className="h-5 w-5 text-primary flex-shrink-0" />;
+      if (stepDescription?.includes('Transfer')) icon = <Users className="h-5 w-5 text-secondary flex-shrink-0" />;
+      if (stepDescription?.includes('Arrive')) icon = <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />;
 
       stepItems.push(
           <div key={i} className="flex items-start gap-3">
@@ -75,7 +73,7 @@ export default function RouteResults({ route }: RouteResultsProps) {
         
         <div className="relative rounded-xl border border-white/10 bg-card/70 backdrop-blur-lg text-white shadow-lg overflow-hidden">
             {route.image && (
-                <div className="relative h-40 w-full">
+                <div className="relative h-48 w-full">
                     <Image
                         src={route.image}
                         alt="Bus image"
@@ -85,7 +83,7 @@ export default function RouteResults({ route }: RouteResultsProps) {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent"></div>
                     <div className="absolute bottom-4 left-4">
-                      <span className="font-bold text-5xl text-white drop-shadow-lg">{route.number}</span>
+                      <span className="font-bold text-6xl text-white drop-shadow-lg">{route.number}</span>
                     </div>
                 </div>
             )}
