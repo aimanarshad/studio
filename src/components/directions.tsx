@@ -60,6 +60,7 @@ export function Directions({ origin, destination, travelMode }: DirectionsProps)
     return () => {
         if (directionsRenderer) {
             directionsRenderer.setMap(null);
+            // setDirectionsRenderer(undefined); // This might be too aggressive
         }
     };
   }, [directionsService, directionsRenderer, origin, destination, travelMode, toast]);
