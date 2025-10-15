@@ -39,9 +39,11 @@ export default function RouteResults({ route }: RouteResultsProps) {
       const stepDescription = steps[i+1];
       
       let icon = <ArrowRight className="h-5 w-5 text-secondary flex-shrink-0" />;
-      if (stepDescription.includes('Take')) icon = <Bus className="h-5 w-5 text-primary flex-shrink-0" />;
-      if (stepDescription.includes('Transfer')) icon = <Users className="h-5 w-5 text-secondary flex-shrink-0" />;
-      if (stepDescription.includes('Arrive')) icon = <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />;
+      if (stepDescription) {
+        if (stepDescription.includes('Take')) icon = <Bus className="h-5 w-5 text-primary flex-shrink-0" />;
+        if (stepDescription.includes('Transfer')) icon = <Users className="h-5 w-5 text-secondary flex-shrink-0" />;
+        if (stepDescription.includes('Arrive')) icon = <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />;
+      }
 
       stepItems.push(
           <div key={i} className="flex items-start gap-3">
