@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useMap, useMapsLibrary } from '@vis.gl/react-google-maps';
+import { useToast } from '@/hooks/use-toast';
+import { AlertTriangle } from 'lucide-react';
 
 interface DirectionsProps {
   origin: string;
@@ -12,6 +14,7 @@ interface DirectionsProps {
 export function Directions({ origin, destination, travelMode }: DirectionsProps) {
   const map = useMap();
   const routesLibrary = useMapsLibrary('routes');
+  const { toast } = useToast();
   const [directionsService, setDirectionsService] = useState<google.maps.DirectionsService>();
   const [directionsRenderer, setDirectionsRenderer] = useState<google.maps.DirectionsRenderer>();
   const [routes, setRoutes] = useState<google.maps.DirectionsRoute[]>([]);
@@ -26,7 +29,7 @@ export function Directions({ origin, destination, travelMode }: DirectionsProps)
   }, [routesLibrary, map]);
 
   useEffect(() => {
-    if (!directionsService || !directionsRenderer) return;
+    if (!directionsService || !directionsRenderer || !origin || !destination) return;
 
     directionsService
       .route({
@@ -38,10 +41,28 @@ export function Directions({ origin, destination, travelMode }: DirectionsProps)
       .then(response => {
         directionsRenderer.setDirections(response);
         setRoutes(response.routes);
+      })
+      .catch((e: google.maps.MapsRequestError) => {
+        console.error('Directions request failed:', e.message);
+        if (e.code === 'NOT_FOUND') {
+            toast({
+                variant: 'destructive',
+                title: (
+                    <div className="flex items-center gap-2">
+                        <AlertTriangle /> No Map Route Found
+                    </div>
+                ),
+                description: 'Google Maps could not find a transit route for the specified locations.',
+            });
+        }
       });
 
-    return () => directionsRenderer.setMap(null);
-  }, [directionsService, directionsRenderer, origin, destination, travelMode]);
+    return () => {
+        if (directionsRenderer) {
+            directionsRenderer.setMap(null);
+        }
+    };
+  }, [directionsService, directionsRenderer, origin, destination, travelMode, toast]);
 
   useEffect(() => {
     if (!directionsRenderer) return;
