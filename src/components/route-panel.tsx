@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mic, BusFront, Loader2 } from 'lucide-react';
+import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useToast } from '@/hooks/use-toast';
 import { suggestNearbyRouteConnections } from '@/ai/flows/suggest-nearby-route-connections';
@@ -34,20 +34,25 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
     lang: 'en-US',
   });
   
-  useEffect(() => {
+  const getCurrentLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           onLocationFound({ lat: latitude, lng: longitude });
-          setFrom('Your Current Location'); 
+          setFrom('Your Current Location');
+          toast({ title: 'Location Found', description: 'Your current location has been set as the origin.'});
         },
         () => {
-          toast({ variant: 'destructive', title: 'Location Error', description: 'Could not get your location. Please enable permissions.' });
+          toast({ variant: 'destructive', title: 'Location Error', description: 'Could not get your location. Please enable permissions and try again.' });
         }
       );
     }
-  }, [onLocationFound, toast]);
+  }
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
 
   const handleVoiceInput = (field: 'from' | 'to') => {
     setActiveInput(field);
@@ -112,44 +117,66 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
     }
   }
 
+  const clearInput = (field: 'from' | 'to') => {
+    if (field === 'from') setFrom('');
+    if (field === 'to') setTo('');
+  }
 
   return (
-    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-96">
-      <Card className="bg-background/80 backdrop-blur-lg border-primary/20 shadow-2xl shadow-black/50 animate-in fade-in slide-in-from-top-4 duration-500">
-        <CardContent className="p-4">
+    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[28rem]">
+      <Card className="bg-background/80 backdrop-blur-xl border-border shadow-2xl shadow-black/20 rounded-2xl">
+        <CardContent className="p-4 md:p-6">
           {!route ? (
             <div className="space-y-4">
+               <div className="flex items-center justify-between">
+                <h2 className="text-xl font-bold text-foreground">Find a bus route</h2>
+                <Button variant="ghost" size="icon" onClick={getCurrentLocation} className="h-9 w-9 text-muted-foreground hover:text-primary">
+                    <LocateFixed className="h-5 w-5" />
+                </Button>
+               </div>
               <div className="relative">
                 <AutocompleteInput
-                  placeholder="From"
+                  placeholder="Where are you now?"
                   value={from}
                   onPlaceSelect={(place) => handlePlaceSelect(place, 'from')}
                   onChange={(e) => setFrom(e.currentTarget.value)}
-                  className="pr-10"
+                  className="pl-4 pr-16"
                 />
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('from')}>
-                  <Mic className={`h-4 w-4 ${isListening && activeInput === 'from' ? 'text-destructive animate-pulse' : ''}`} />
-                </Button>
+                <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                    {from && <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => clearInput('from')}><X className="h-4 w-4" /></Button>}
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('from')}>
+                        <Mic className={`h-4 w-4 ${isListening && activeInput === 'from' ? 'text-destructive animate-pulse' : ''}`} />
+                    </Button>
+                </div>
               </div>
               <div className="relative">
                 <AutocompleteInput
-                  placeholder="To"
+                  placeholder="Where do you want to go?"
                   value={to}
                   onPlaceSelect={(place) => handlePlaceSelect(place, 'to')}
                   onChange={(e) => setTo(e.currentTarget.value)}
-                  className="pr-10"
+                  className="pl-4 pr-16"
                 />
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('to')}>
-                   <Mic className={`h-4 w-4 ${isListening && activeInput === 'to' ? 'text-destructive animate-pulse' : ''}`} />
-                </Button>
+                 <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center">
+                    {to && <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => clearInput('to')}><X className="h-4 w-4" /></Button>}
+                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('to')}>
+                        <Mic className={`h-4 w-4 ${isListening && activeInput === 'to' ? 'text-destructive animate-pulse' : ''}`} />
+                    </Button>
+                </div>
               </div>
-              <Button onClick={handleFindRoute} disabled={isPending} className="w-full bg-primary/90 hover:bg-primary shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105">
-                {isPending ? <Loader2 className="animate-spin" /> : <BusFront className="mr-2 h-4 w-4" />}
+              <Button onClick={handleFindRoute} disabled={isPending} size="lg" className="w-full font-semibold text-base bg-secondary text-secondary-foreground shadow-lg shadow-secondary/30 transition-all duration-300 hover:scale-105 hover:shadow-secondary/50 hover:bg-secondary/90 focus:ring-4 focus:ring-secondary/50">
+                {isPending ? <Loader2 className="animate-spin" /> : <BusFront className="mr-2 h-5 w-5" />}
                 Find Route
               </Button>
             </div>
           ) : (
-            <RouteResults route={route} onNewSearch={handleNewSearch} />
+            <div className="animate-in fade-in duration-500">
+                <Button onClick={handleNewSearch} variant="ghost" className="mb-2 -ml-3">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    New Search
+                </Button>
+                <RouteResults route={route} />
+            </div>
           )}
         </CardContent>
       </Card>

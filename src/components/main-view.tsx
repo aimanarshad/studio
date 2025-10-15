@@ -9,7 +9,7 @@ export type Route = {
   number: string;
   stops: string[];
   start: string;
-  end: string;
+  end:string;
   time: string;
   isAiSuggestion: boolean;
   aiDetails?: string;
@@ -20,7 +20,7 @@ export default function MainView() {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   return (
-    <div className="h-full w-full animate-in fade-in duration-500">
+    <div className="h-full w-full animate-in fade-in-0 slide-in-from-bottom-8 duration-1000">
       <Map userLocation={userLocation} />
       <RoutePanel
         onRouteFound={setRoute}
