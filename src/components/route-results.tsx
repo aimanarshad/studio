@@ -33,31 +33,33 @@ export default function RouteResults({ route, onNewSearch }: RouteResultsProps) 
   return (
     <div className="animate-in fade-in space-y-4">
         <div className="flex items-center justify-between">
-            <h2 className="text-xl font-bold font-headline text-primary">Your Route</h2>
-            <Button variant="ghost" size="icon" onClick={handleTextToSpeech} className="h-8 w-8">
+            <h2 className="text-2xl font-bold font-headline text-primary drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">Your Route</h2>
+            <Button variant="ghost" size="icon" onClick={handleTextToSpeech} className="h-8 w-8 text-muted-foreground hover:text-primary">
                 <Volume2 className="h-5 w-5" />
                 <span className="sr-only">Read route details</span>
             </Button>
         </div>
 
-        <div className="relative rounded-lg border bg-card text-card-foreground shadow-sm overflow-hidden">
+        <div className="relative rounded-lg border border-primary/20 bg-card/50 text-card-foreground shadow-lg shadow-black/30 overflow-hidden">
             <div className="p-4 space-y-3 text-sm">
                  <div className="flex items-center gap-3">
                     <Bus className="h-5 w-5 text-primary" />
-                    <span className="font-semibold">{route.name}</span>
+                    <span className="font-semibold text-lg">{route.name}</span>
                 </div>
-                <div className="flex items-center gap-3">
-                    <MapPin className="h-5 w-5 text-primary" />
-                    <span className="truncate">{route.start}</span>
-                    <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground"/>
-                    <span className="truncate">{route.end}</span>
+                <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-primary mt-0.5" />
+                    <div className="flex flex-col gap-1">
+                      <span className="truncate font-medium">{route.start}</span>
+                      <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground self-start"/>
+                      <span className="truncate font-medium">{route.end}</span>
+                    </div>
                 </div>
                 <div className="flex items-center gap-3">
                     <Clock className="h-5 w-5 text-primary" />
                     <span>Estimated time: {route.time}</span>
                 </div>
                 {route.aiDetails && (
-                    <p className="text-sm text-muted-foreground pt-2">{route.aiDetails}</p>
+                    <p className="text-sm text-primary-foreground/80 pt-2 border-t border-primary/10 mt-3">{route.aiDetails}</p>
                 )}
             </div>
             <div className="absolute -right-12 -bottom-8 opacity-10">
@@ -89,7 +91,7 @@ export default function RouteResults({ route, onNewSearch }: RouteResultsProps) 
         </Accordion>
       )}
 
-      <Button onClick={onNewSearch} variant="outline" className="w-full">
+      <Button onClick={onNewSearch} variant="outline" className="w-full hover:bg-primary/10 hover:text-primary transition-colors">
         New Search
       </Button>
     </div>

@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <APIProvider apiKey={apiKey} libraries={['places']}>
       <main className="relative h-screen w-screen overflow-hidden bg-background">
-        <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20" style={{backgroundImage: 'url("/bus-pattern.svg")', backgroundSize: '300px 300px'}}></div>
+        <div className="absolute inset-0 z-0 opacity-5 dark:opacity-10" style={{backgroundImage: 'url("/bus-pattern.svg")', backgroundSize: '300px 300px'}}></div>
         <LandingView isVisible={!isStarted} onGetStarted={() => setIsStarted(true)} />
         {isStarted && <MainView />}
       </main>

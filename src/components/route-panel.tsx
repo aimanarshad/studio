@@ -115,7 +115,7 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
 
   return (
     <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-96">
-      <Card className="bg-background/80 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
+      <Card className="bg-background/80 backdrop-blur-lg border-primary/20 shadow-2xl shadow-black/50 animate-in fade-in slide-in-from-top-4 duration-500">
         <CardContent className="p-4">
           {!route ? (
             <div className="space-y-4">
@@ -127,7 +127,7 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
                   onChange={(e) => setFrom(e.currentTarget.value)}
                   className="pr-10"
                 />
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={() => handleVoiceInput('from')}>
+                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('from')}>
                   <Mic className={`h-4 w-4 ${isListening && activeInput === 'from' ? 'text-destructive animate-pulse' : ''}`} />
                 </Button>
               </div>
@@ -139,11 +139,11 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
                   onChange={(e) => setTo(e.currentTarget.value)}
                   className="pr-10"
                 />
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={() => handleVoiceInput('to')}>
+                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 text-muted-foreground hover:text-primary" onClick={() => handleVoiceInput('to')}>
                    <Mic className={`h-4 w-4 ${isListening && activeInput === 'to' ? 'text-destructive animate-pulse' : ''}`} />
                 </Button>
               </div>
-              <Button onClick={handleFindRoute} disabled={isPending} className="w-full">
+              <Button onClick={handleFindRoute} disabled={isPending} className="w-full bg-primary/90 hover:bg-primary shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105">
                 {isPending ? <Loader2 className="animate-spin" /> : <BusFront className="mr-2 h-4 w-4" />}
                 Find Route
               </Button>
