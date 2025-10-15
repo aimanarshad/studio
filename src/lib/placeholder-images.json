@@ -1,3 +1,22 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "bus-1",
+      "description": "A modern city bus on a busy street.",
+      "imageUrl": "https://picsum.photos/seed/bus1/400/600",
+      "imageHint": "city bus"
+    },
+    {
+      "id": "bus-2",
+      "description": "A bus driving down a road at sunset.",
+      "imageUrl": "https://picsum.photos/seed/bus2/400/600",
+      "imageHint": "bus sunset"
+    },
+    {
+      "id": "bus-3",
+      "description": "The interior of an empty public bus.",
+      "imageUrl": "https://picsum.photos/seed/bus3/400/600",
+      "imageHint": "bus interior"
+    }
+  ]
 }

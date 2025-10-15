@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X } from 'lucide-react';
+import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X, ArrowRight } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useToast } from '@/hooks/use-toast';
 import { suggestNearbyRouteConnections } from '@/ai/flows/suggest-nearby-route-connections';
@@ -52,6 +52,7 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
 
   useEffect(() => {
     getCurrentLocation();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleVoiceInput = (field: 'from' | 'to') => {
@@ -123,13 +124,13 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
   }
 
   return (
-    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[28rem]">
-      <Card className="bg-background/80 backdrop-blur-xl border-border shadow-2xl shadow-black/20 rounded-2xl">
+    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[30rem]">
+      <Card className="bg-background/80 backdrop-blur-xl border-border/50 shadow-2xl shadow-black/20 rounded-2xl animate-in fade-in-0 slide-in-from-top-4 duration-500">
         <CardContent className="p-4 md:p-6">
           {!route ? (
             <div className="space-y-4">
-               <div className="flex items-center justify-between">
-                <h2 className="text-xl font-bold text-foreground">Find a bus route</h2>
+               <div className="flex items-center justify-between mb-2">
+                <h2 className="text-xl font-bold text-foreground">Where to?</h2>
                 <Button variant="ghost" size="icon" onClick={getCurrentLocation} className="h-9 w-9 text-muted-foreground hover:text-primary">
                     <LocateFixed className="h-5 w-5" />
                 </Button>
@@ -164,14 +165,13 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
                     </Button>
                 </div>
               </div>
-              <Button onClick={handleFindRoute} disabled={isPending} size="lg" className="w-full font-semibold text-base bg-secondary text-secondary-foreground shadow-lg shadow-secondary/30 transition-all duration-300 hover:scale-105 hover:shadow-secondary/50 hover:bg-secondary/90 focus:ring-4 focus:ring-secondary/50">
-                {isPending ? <Loader2 className="animate-spin" /> : <BusFront className="mr-2 h-5 w-5" />}
-                Find Route
+              <Button onClick={handleFindRoute} disabled={isPending} size="lg" className="w-full font-semibold text-base bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-primary/50 active:scale-100">
+                {isPending ? <Loader2 className="animate-spin" /> : <><BusFront className="mr-2 h-5 w-5" /> Find Route</>}
               </Button>
             </div>
           ) : (
             <div className="animate-in fade-in duration-500">
-                <Button onClick={handleNewSearch} variant="ghost" className="mb-2 -ml-3">
+                <Button onClick={handleNewSearch} variant="ghost" className="mb-2 -ml-3 text-sm font-medium">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     New Search
                 </Button>

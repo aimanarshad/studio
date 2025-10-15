@@ -4,6 +4,7 @@ import { useState } from 'react';
 import LandingView from '@/components/landing-view';
 import MainView from '@/components/main-view';
 import { APIProvider } from '@vis.gl/react-google-maps';
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function Home() {
   const [isStarted, setIsStarted] = useState(false);
@@ -26,23 +27,21 @@ export default function Home() {
     );
   }
 
+  const handleGetStarted = () => {
+    setIsStarted(true);
+  }
+
   return (
     <APIProvider apiKey={apiKey} libraries={['places']}>
       <main className="relative h-screen w-screen overflow-hidden bg-background">
-        <div 
-            className="absolute inset-0 z-0 opacity-20" 
-            style={{
-                backgroundImage: 'url("/bus-road-pattern.svg")', 
-                backgroundSize: '400px', 
-                backgroundRepeat: 'repeat'
-            }}
-        ></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background z-0"></div>
-
-        <LandingView isVisible={!isStarted} onGetStarted={() => setIsStarted(true)} />
+        <div className="absolute top-4 right-4 z-50">
+          <ThemeToggle />
+        </div>
         
-        <div className={`transition-all duration-1000 ease-in-out ${isStarted ? 'opacity-100' : 'opacity-0'}`}>
-            {isStarted && <MainView />}
+        <LandingView isVisible={!isStarted} onGetStarted={handleGetStarted} />
+        
+        <div className={`absolute inset-0 transition-all duration-1000 ease-in-out ${isStarted ? 'opacity-100' : 'opacity-0 -translate-y-full'}`}>
+          {isStarted && <MainView />}
         </div>
       </main>
     </APIProvider>
