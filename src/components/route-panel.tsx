@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X } from 'lucide-react';
+import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X, CheckCircle2 } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useToast } from '@/hooks/use-toast';
 import { suggestNearbyRouteConnections } from '@/ai/flows/suggest-nearby-route-connections';
@@ -11,7 +11,7 @@ import RouteResults from '@/components/route-results';
 import type { Route } from './main-view';
 import busRoutesData from '@/lib/bus-routes.json';
 import { AutocompleteInput } from './autocomplete-input';
-import { CheckCircle2 } from 'lucide-react';
+
 
 interface RoutePanelProps {
   onRouteFound: (route: Route | null) => void;
