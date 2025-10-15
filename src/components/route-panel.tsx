@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect, useTransition } from 'react';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Mic, BusFront, Loader2 } from 'lucide-react';
@@ -11,6 +10,7 @@ import { suggestNearbyRouteConnections } from '@/ai/flows/suggest-nearby-route-c
 import RouteResults from '@/components/route-results';
 import type { Route } from './main-view';
 import busRoutesData from '@/lib/bus-routes.json';
+import { AutocompleteInput } from './autocomplete-input';
 
 interface RoutePanelProps {
   onRouteFound: (route: Route | null) => void;
@@ -101,18 +101,30 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
     onRouteFound(null);
     setTo('');
   };
+  
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult | null, field: 'from' | 'to') => {
+    if (place?.formatted_address) {
+        if (field === 'from') {
+            setFrom(place.formatted_address);
+        } else {
+            setTo(place.formatted_address);
+        }
+    }
+  }
+
 
   return (
     <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-96">
-      <Card className="bg-background/80 backdrop-blur-md shadow-2xl">
+      <Card className="bg-background/80 backdrop-blur-md shadow-2xl animate-in fade-in slide-in-from-top-4 duration-500">
         <CardContent className="p-4">
           {!route ? (
             <div className="space-y-4">
               <div className="relative">
-                <Input
+                <AutocompleteInput
                   placeholder="From"
                   value={from}
-                  onChange={(e) => setFrom(e.target.value)}
+                  onPlaceSelect={(place) => handlePlaceSelect(place, 'from')}
+                  onChange={(e) => setFrom(e.currentTarget.value)}
                   className="pr-10"
                 />
                 <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={() => handleVoiceInput('from')}>
@@ -120,10 +132,11 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
                 </Button>
               </div>
               <div className="relative">
-                <Input
+                <AutocompleteInput
                   placeholder="To"
                   value={to}
-                  onChange={(e) => setTo(e.target.value)}
+                  onPlaceSelect={(place) => handlePlaceSelect(place, 'to')}
+                  onChange={(e) => setTo(e.currentTarget.value)}
                   className="pr-10"
                 />
                 <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={() => handleVoiceInput('to')}>

@@ -19,7 +19,7 @@ export default function Home() {
             Google Maps API key is missing. Please add it to your environment variables.
           </p>
           <code className="mt-4 inline-block rounded bg-muted p-2 text-sm">
-            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=YOUR_API_KEY
+            NEXT_PUBLIC_GOOGLE_MAPS_API_KEY="AIzaSyB7B6OAj1hiKcDmRqSUnLe8D1kanNPmbDA"
           </code>
         </div>
       </div>
@@ -27,8 +27,9 @@ export default function Home() {
   }
 
   return (
-    <APIProvider apiKey={apiKey}>
+    <APIProvider apiKey={apiKey} libraries={['places']}>
       <main className="relative h-screen w-screen overflow-hidden bg-background">
+        <div className="absolute inset-0 z-0 opacity-10 dark:opacity-20" style={{backgroundImage: 'url("/bus-pattern.svg")', backgroundSize: '300px 300px'}}></div>
         <LandingView isVisible={!isStarted} onGetStarted={() => setIsStarted(true)} />
         {isStarted && <MainView />}
       </main>
