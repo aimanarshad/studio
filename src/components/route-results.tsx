@@ -4,10 +4,9 @@ import React from 'react';
 import type { Route } from './main-view';
 import { Button } from './ui/button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
-import { ArrowRight, Bus, Clock, MapPin, Route as RouteIcon, Volume2, AlertTriangle } from 'lucide-react';
+import { ArrowRight, Bus, Clock, MapPin, Route as RouteIcon, Volume2, AlertTriangle, Users, CheckCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
-import { AnimatedBus } from './icons/animated-bus';
 
 interface RouteResultsProps {
   route: Route;
@@ -30,59 +29,90 @@ export default function RouteResults({ route }: RouteResultsProps) {
     window.speechSynthesis.speak(utterance);
   };
 
+  const renderAiDetails = () => {
+    if (!route.aiDetails) return null;
+    const steps = route.aiDetails.split(/(Step \d+:)/).filter(Boolean);
+    const stepItems = [];
+
+    for (let i = 0; i < steps.length; i += 2) {
+      const stepTitle = steps[i];
+      const stepDescription = steps[i+1];
+      
+      let icon = <ArrowRight className="h-5 w-5 text-secondary flex-shrink-0" />;
+      if (stepDescription.includes('Take')) icon = <Bus className="h-5 w-5 text-primary flex-shrink-0" />;
+      if (stepDescription.includes('Transfer')) icon = <Users className="h-5 w-5 text-secondary flex-shrink-0" />;
+      if (stepDescription.includes('Arrive')) icon = <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0" />;
+
+      stepItems.push(
+          <div key={i} className="flex items-start gap-3">
+              {icon}
+              <p className="text-base text-white/90">
+                <span className="font-semibold">{stepTitle}</span>
+                {stepDescription}
+              </p>
+          </div>
+      )
+    }
+
+    return (
+        <div className="space-y-3 pt-3 border-t border-white/10 mt-3">
+            {stepItems}
+        </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
         <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold font-headline text-primary">Your Route</h2>
+            <h2 className="text-2xl font-bold font-headline text-primary">{route.name}</h2>
             <Button variant="ghost" size="icon" onClick={handleTextToSpeech} className="h-9 w-9 text-muted-foreground hover:text-primary">
                 <Volume2 className="h-5 w-5" />
                 <span className="sr-only">Read route details</span>
             </Button>
         </div>
         
-        <div className="relative rounded-xl border border-border/50 bg-card/70 backdrop-blur-lg text-foreground shadow-lg overflow-hidden">
-            <div className="grid md:grid-cols-3">
-                <div className="md:col-span-2 p-4 space-y-4 text-sm">
-                    <div className="flex items-center gap-3">
-                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-md">
-                            <Bus className="h-6 w-6" />
-                        </div>
-                        <span className="font-semibold text-2xl">{route.name}</span>
+        <div className="relative rounded-xl border border-white/10 bg-card/70 backdrop-blur-lg text-white shadow-lg overflow-hidden">
+            {route.image && (
+                <div className="relative h-40 w-full">
+                    <Image
+                        src={route.image}
+                        alt="Bus image"
+                        fill
+                        className="object-cover"
+                        data-ai-hint="modern bus"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-card via-card/50 to-transparent"></div>
+                    <div className="absolute bottom-4 left-4">
+                      <span className="font-bold text-5xl text-white drop-shadow-lg">{route.number}</span>
                     </div>
-                    <div className="flex items-start gap-3">
-                        <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
-                        <div className="flex flex-col gap-1 text-base">
-                            <span className="font-medium">{route.start}</span>
-                            <ArrowRight className="h-4 w-4 flex-shrink-0 text-muted-foreground my-1"/>
-                            <span className="font-medium">{route.end}</span>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <Clock className="h-5 w-5 text-primary flex-shrink-0" />
-                        <span className="text-base">Estimated time: <strong>{route.time}</strong></span>
-                    </div>
-                    {route.aiDetails && (
-                        <p className="text-base text-primary-foreground/90 pt-3 border-t border-border/50 mt-3">{route.aiDetails}</p>
-                    )}
                 </div>
-                {route.image && (
-                    <div className="relative md:col-span-1 min-h-[120px] md:min-h-full">
-                        <Image
-                            src={route.image}
-                            alt="Bus image"
-                            fill
-                            className="object-cover"
-                            data-ai-hint="bus street"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-card via-card/50 to-transparent"></div>
+            )}
+            <div className="p-4 space-y-4 text-sm">
+                <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                    <div className="text-base">
+                        <p className="font-medium text-white/80">From</p>
+                        <p className="font-semibold">{route.start}</p>
                     </div>
-                )}
+                </div>
+                <div className="flex items-start gap-3">
+                    <MapPin className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" />
+                     <div className="text-base">
+                        <p className="font-medium text-white/80">To</p>
+                        <p className="font-semibold">{route.end}</p>
+                    </div>
+                </div>
+                 <div className="flex items-center gap-3">
+                    <Clock className="h-5 w-5 text-primary flex-shrink-0" />
+                    <span className="text-base">Estimated time: <strong>{route.time}</strong></span>
+                </div>
+
+                {route.isAiSuggestion ? renderAiDetails() : null}
             </div>
-             <AnimatedBus className="absolute -bottom-4 -right-8 opacity-10" />
         </div>
 
       {route.isAiSuggestion && (
-        <div className="flex items-center gap-3 rounded-lg border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm text-yellow-700 dark:text-yellow-300">
+        <div className="flex items-center gap-3 rounded-lg border border-yellow-500/50 bg-yellow-500/10 p-3 text-sm text-yellow-300">
           <AlertTriangle className="h-5 w-5 flex-shrink-0" />
           <div>
             <p className="font-semibold">No direct route found.</p>

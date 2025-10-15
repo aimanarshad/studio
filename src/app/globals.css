@@ -4,16 +4,16 @@
 
 @layer base {
   :root {
-    --background: 220 20% 97%; /* #f5f7fa */
+    --background: 0 0% 96%; /* #f5f7fa */
     --foreground: 224 71% 4%; /* #050f1a */
-    --card: 220 20% 100%;
+    --card: 0 0% 100%;
     --card-foreground: 224 71% 4%;
-    --popover: 220 20% 100%;
+    --popover: 0 0% 100%;
     --popover-foreground: 224 71% 4%;
-    --primary: 211 100% 50%; /* #007bff */
-    --primary-foreground: 210 40% 98%;
-    --secondary: 187 100% 42%; /* #00bcd4 */
-    --secondary-foreground: 210 40% 98%;
+    --primary: 36 100% 50%; /* #FF9800 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 187 100% 42%; /* #00BCD4 */
+    --secondary-foreground: 0 0% 100%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215 28% 45%;
     --accent: 210 40% 94%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 211 100% 50%;
+    --ring: 36 100% 50%;
     --radius: 0.75rem;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -32,25 +32,25 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 211 100% 50%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 187 100% 42%;
-    --secondary-foreground: 210 40% 98%;
+    --background: 0 0% 7%; /* #121212 */
+    --foreground: 0 0% 100%; /* #FFFFFF */
+    --card: 0 0% 10%; /* Slightly lighter than background */
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 36 100% 50%; /* #FF9800 */
+    --primary-foreground: 0 0% 100%;
+    --secondary: 187 100% 42%; /* #00BCD4 */
+    --secondary-foreground: 0 0% 100%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 217.2 32.6% 25.5%; /* Lighter accent for dark mode */
+    --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 211 100% 50%;
+    --ring: 36 100% 50%;
   }
 }
 

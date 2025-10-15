@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useTransition } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X, ArrowRight } from 'lucide-react';
+import { Mic, BusFront, Loader2, LocateFixed, ArrowLeft, X } from 'lucide-react';
 import { useSpeechRecognition } from '@/hooks/use-speech-recognition';
 import { useToast } from '@/hooks/use-toast';
 import { suggestNearbyRouteConnections } from '@/ai/flows/suggest-nearby-route-connections';
@@ -11,6 +11,7 @@ import RouteResults from '@/components/route-results';
 import type { Route } from './main-view';
 import busRoutesData from '@/lib/bus-routes.json';
 import { AutocompleteInput } from './autocomplete-input';
+import { CheckCircle2 } from 'lucide-react';
 
 interface RoutePanelProps {
   onRouteFound: (route: Route | null) => void;
@@ -41,7 +42,10 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
           const { latitude, longitude } = position.coords;
           onLocationFound({ lat: latitude, lng: longitude });
           setFrom('Your Current Location');
-          toast({ title: 'Location Found', description: 'Your current location has been set as the origin.'});
+          toast({ 
+              title: <div className="flex items-center gap-2"><CheckCircle2 className="text-green-500" /> Location Found</div>,
+              description: 'Your current location has been set as the origin.'
+            });
         },
         () => {
           toast({ variant: 'destructive', title: 'Location Error', description: 'Could not get your location. Please enable permissions and try again.' });
@@ -125,12 +129,12 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
 
   return (
     <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[30rem]">
-      <Card className="bg-background/80 backdrop-blur-xl border-border/50 shadow-2xl shadow-black/20 rounded-2xl animate-in fade-in-0 slide-in-from-top-4 duration-500">
+      <Card className="bg-[#121212]/80 backdrop-blur-xl border-secondary/20 shadow-2xl shadow-black/30 rounded-2xl animate-in fade-in-0 slide-in-from-top-4 duration-500">
         <CardContent className="p-4 md:p-6">
           {!route ? (
             <div className="space-y-4">
                <div className="flex items-center justify-between mb-2">
-                <h2 className="text-xl font-bold text-foreground">Where to?</h2>
+                <h2 className="text-xl font-bold text-white">Where to?</h2>
                 <Button variant="ghost" size="icon" onClick={getCurrentLocation} className="h-9 w-9 text-muted-foreground hover:text-primary">
                     <LocateFixed className="h-5 w-5" />
                 </Button>
@@ -165,13 +169,13 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
                     </Button>
                 </div>
               </div>
-              <Button onClick={handleFindRoute} disabled={isPending} size="lg" className="w-full font-semibold text-base bg-gradient-to-r from-primary to-secondary text-primary-foreground shadow-lg shadow-primary/30 transition-all duration-300 hover:scale-105 hover:shadow-primary/50 active:scale-100">
+              <Button onClick={handleFindRoute} disabled={isPending} size="lg" className="w-full font-semibold text-base bg-gradient-to-r from-primary to-orange-600 text-white shadow-lg shadow-primary/40 transition-all duration-300 hover:scale-105 hover:shadow-primary/60 active:scale-100">
                 {isPending ? <Loader2 className="animate-spin" /> : <><BusFront className="mr-2 h-5 w-5" /> Find Route</>}
               </Button>
             </div>
           ) : (
             <div className="animate-in fade-in duration-500">
-                <Button onClick={handleNewSearch} variant="ghost" className="mb-2 -ml-3 text-sm font-medium">
+                <Button onClick={handleNewSearch} variant="ghost" className="mb-2 -ml-3 text-sm font-medium text-white hover:text-primary">
                     <ArrowLeft className="mr-2 h-4 w-4" />
                     New Search
                 </Button>
