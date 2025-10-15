@@ -128,9 +128,9 @@ export default function RoutePanel({ onRouteFound, onLocationFound, route }: Rou
   }
 
   return (
-    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[30rem]">
-      <Card className="bg-[#121212]/80 backdrop-blur-xl border-secondary/20 shadow-2xl shadow-black/30 rounded-2xl animate-in fade-in-0 slide-in-from-top-4 duration-500">
-        <CardContent className="p-4 md:p-6">
+    <div className="absolute top-0 left-0 right-0 p-4 md:top-8 md:left-8 md:right-auto md:w-[30rem] max-h-screen">
+      <Card className="bg-[#121212]/80 backdrop-blur-xl border-secondary/20 shadow-2xl shadow-black/30 rounded-2xl animate-in fade-in-0 slide-in-from-top-4 duration-500 overflow-hidden">
+        <CardContent className="p-4 md:p-6 max-h-[calc(100vh-4rem)] md:max-h-[calc(100vh-5rem)] overflow-y-auto">
           {!route ? (
             <div className="space-y-4">
                <div className="flex items-center justify-between mb-2">
