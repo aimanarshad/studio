@@ -1,0 +1,65 @@
+{
+  "routes": [
+    {
+      "id": "w-11",
+      "name": "W-11",
+      "stops": [
+        "Nagan Chowrangi",
+        "Sakhi Hassan",
+        "Five Star Chowrangi",
+        "KDA Chowrangi",
+        "Nazimabad",
+        "Liaquatabad",
+        "Teen Hatti",
+        "Guru Mandir",
+        "Numaish",
+        "Saddar",
+        "M.A. Jinnah Road",
+        "Tower"
+      ]
+    },
+    {
+      "id": "d-3",
+      "name": "D-3",
+      "stops": [
+        "Model Colony",
+        "Malir",
+        "Drigh Road",
+        "Shahrah-e-Faisal",
+        "Nursery",
+        "FTC",
+        "Metropole",
+        "Saddar",
+        "II Chundrigar Road",
+        "Tower"
+      ]
+    },
+    {
+      "id": "g-7",
+      "name": "G-7",
+      "stops": [
+        "Safoora Goth",
+        "University Road",
+        "NIPA Chowrangi",
+        "Hassan Square",
+        "Civic Centre",
+        "Liaquatabad",
+        "Nazimabad",
+        "SITE Area"
+      ]
+    },
+    {
+      "id": "uc-4",
+      "name": "UC-4",
+      "stops": [
+        "Surjani Town",
+        "4K Chowrangi",
+        "North Karachi",
+        "UP More",
+        "Serena Mobile Market",
+        "Nagan Chowrangi",
+        "Sohrab Goth"
+      ]
+    }
+  ]
+}
